@@ -1,0 +1,177 @@
+package com;
+
+import java.util.Arrays;
+
+/**
+ * Chess Piece Class
+ * Every piece has a color, a type, and a position
+ * 
+ * the type is an integer that represents the type of piece
+ * 1 = white pawn
+ * 2 = white knight
+ * 3 = white bishop
+ * 4 = white rook
+ * 5 = white queen
+ * 6 = white king
+ * 7 = black pawn
+ * 8 = black knight
+ * 9 = black bishop
+ * 10 = black rook
+ * 11 = black queen
+ * 12 = black king
+ * 
+ * @author Florian Montourcy
+ * @version 1.0
+ */
+public abstract class Piece {
+
+    protected Board board;
+    protected int[] tempBoard;
+    protected int type;
+    protected int position;
+    protected int hasMoved;
+
+    public Piece(int type, int position, Board board) {
+        this.type = type;
+        this.position = position;
+        this.board = board;
+        this.hasMoved = 0;
+        this.tempBoard = new int[64];
+    }
+
+    public static Piece getPiece(int type, int position, Board board) {
+        switch (type) {
+            case 1:
+                return new Pawn(type, position, board);
+            case 2:
+                return new Knight(type, position, board);
+            case 3:
+                return new Bishop(type, position, board);
+            case 4:
+                return new Rook(type, position, board);
+            case 5:
+                return new Queen(type, position, board);
+            case 6:
+                return new King(type, position, board);
+            case 7:
+                return new Pawn(type, position, board);
+            case 8:
+                return new Knight(type, position, board);
+            case 9:
+                return new Bishop(type, position, board);
+            case 10:
+                return new Rook(type, position, board);
+            case 11:
+                return new Queen(type, position, board);
+            case 12:
+                return new King(type, position, board);
+            default:
+                return null;
+        }
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public boolean getColor() {
+        return type < 7;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int hasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(int hasMoved) {
+        this.hasMoved = hasMoved;
+    }
+
+    public void addHasMoved(int nb) {
+        this.hasMoved += nb;
+    }
+
+    public void move(int position) {
+        System.arraycopy(board.board, 0, this.tempBoard, 0, 64);
+
+        // If a pawn reaches the other side of the board, it will be promoted to a queen
+        if (this.type == 1 && position > 55) {
+            this.type = 5;
+        } else if (this.type == 7 && position < 8) {
+            this.type = 11;
+        }
+
+        this.getBoard().setPiece(position, this.type);
+        this.getBoard().setPiece(this.getPosition(), 0);
+        this.setPosition(position);
+        this.addHasMoved(1);
+        board.printBoard();
+    }
+
+    public void undoMove() {
+        System.arraycopy(this.tempBoard, 0, board.board, 0, 64);
+        this.addHasMoved(-1);
+    }
+
+    // TODO: fix this
+    public boolean isLegalMove(int position) {
+        // Check that the move is legal for the piece by checking if the move is valid
+        // and if the move puts the king in check
+        if (!this.isValidMove(position)) {
+            return false;
+        }
+        System.out.println(this + " : " + this.getPosition() + " -> " + position + " is a valid move");
+
+        // Check if the move puts the king in check
+        this.move(position);
+        boolean inCheck = this.getBoard().isInCheck(this.getColor());
+        this.undoMove();
+
+        return !inCheck;
+    }
+
+    public abstract boolean isValidMove(int position);
+
+    /**
+     * <p>
+     * Gets all the legal moves for the piece
+     * </p>
+     */
+    public int[][] getLegalMoves() {
+
+        int[][] legalMoves = new int[0][0];
+
+        for (int i = 0; i < 64; i++) {
+            if (this.isLegalMove(i)) {
+                legalMoves = Arrays.copyOf(legalMoves, legalMoves.length + 1);
+                legalMoves[legalMoves.length - 1] = new int[] { this.getPosition(), i };
+            }
+        }
+
+        return legalMoves;
+    }
+
+    public void printLegalMoves() {
+        // Print in a nice format all the legal moves for the piece (from and to)
+        int[][] legalMoves = this.getLegalMoves();
+        for (int[] move : legalMoves) {
+            System.out.println("From " + move[0] + " to " + move[1]);
+        }
+    }
+
+}
