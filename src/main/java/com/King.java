@@ -20,9 +20,12 @@ public class King extends Piece {
     }
 
     public boolean isAttackedAt(int position) {
+        System.out.println("Pushing move");
         board.pushMove(this.position, position);
         boolean isAttacked = this.isInCheck();
+        System.out.println("Popping move");
         board.popMove();
+        board.printBoard();
         return isAttacked;
     }
 

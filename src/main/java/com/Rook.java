@@ -1,6 +1,5 @@
 package com;
 
-import java.util.Arrays;
 
 public class Rook extends Piece {
     public Rook(int type, int position, Board board) {
@@ -53,5 +52,12 @@ public class Rook extends Piece {
             return true;
         }
         return false;
+    }
+
+    public void move(int position) {
+        this.getBoard().setPiece(position, this.type);
+        this.getBoard().setPiece(this.getPosition(), 0);
+        this.setPosition(position);
+        this.addHasMoved(1);
     }
 }

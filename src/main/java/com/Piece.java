@@ -26,7 +26,6 @@ import java.util.Arrays;
 public abstract class Piece {
 
     protected Board board;
-    protected int[] tempBoard;
     protected int type;
     protected int position;
     protected int hasMoved;
@@ -36,7 +35,6 @@ public abstract class Piece {
         this.position = position;
         this.board = board;
         this.hasMoved = 0;
-        this.tempBoard = new int[64];
     }
 
     public static Piece getPiece(int type, int position, Board board) {
@@ -106,27 +104,7 @@ public abstract class Piece {
         this.hasMoved += nb;
     }
 
-    // TODO: passe cette méthode en abstraite maybe
-    public void move(int position) {
-        System.arraycopy(board.board, 0, this.tempBoard, 0, 64);
-
-        // If a pawn reaches the other side of the board, it will be promoted to a queen
-        if (this.type == 1 && position > 55) {
-            this.type = 5;
-        } else if (this.type == 7 && position < 8) {
-            this.type = 11;
-        }
-
-        this.getBoard().setPiece(position, this.type);
-        this.getBoard().setPiece(this.getPosition(), 0);
-        this.setPosition(position);
-        this.addHasMoved(1);
-    }
-
-    public void undoMove() {
-        System.arraycopy(this.tempBoard, 0, board.board, 0, 64);
-        this.addHasMoved(-1);
-    }
+    public abstract void move(int position);
 
     // TODO: fix this
     public boolean isLegalMove(int position) {
@@ -140,7 +118,7 @@ public abstract class Piece {
         // Check if the move puts the king in check
         this.move(position);
         boolean inCheck = this.getBoard().isInCheck(this.getColor());
-        this.undoMove();
+        // this.undoMove();
 
         return !inCheck;
     }
