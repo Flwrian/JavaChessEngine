@@ -30,9 +30,6 @@ public class Board {
 
     public boolean whiteTurn;
 
-    public King whiteKing;
-    public King blackKing;
-
     public Board() {
         boardHistory.push(board);
     }
@@ -72,10 +69,6 @@ public class Board {
         for (int i = 48; i < 56; i++) {
             board[i] = 7;
         }
-
-        // Set up the kings, so we can check for check
-        whiteKing = (King) getPiece(60);
-        blackKing = (King) getPiece(4);
     }
 
     public Piece[] getPieces() {
@@ -123,12 +116,25 @@ public class Board {
         whiteTurn = !whiteTurn;
     }
 
+    // TODO: fix this
     public boolean isInCheck(boolean white) {
-        if (white) {
-            return whiteKing.isInCheck();
-        } else {
-            return blackKing.isInCheck();
+        int kingPosition = 0;
+        for (int i = 0; i < 64; i++) {
+            if (board[i] == (white ? 6 : 12)) {
+                kingPosition = i;
+                break;
+            }
         }
+
+        for (int i = 0; i < 64; i++) {
+            if (board[i] != 0 && Piece.getPiece(board[i], i, this).getColor() != white) {
+                Piece piece = Piece.getPiece(board[i], i, this);
+                if (piece.isLegalMove(kingPosition)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void flip(){
@@ -197,6 +203,17 @@ public class Board {
         for (int i = 0; i < 64; i++) {
             newBoard[i] = board[63 - i];
         }
+
+        // Switch the white Queen and King
+        int temp = newBoard[3];
+        newBoard[3] = newBoard[4];
+        newBoard[4] = temp;
+
+        // Switch the black Queen and King
+        temp = newBoard[59];
+        newBoard[59] = newBoard[60];
+        newBoard[60] = temp;
+
         board = newBoard;
     }
 
@@ -321,5 +338,61 @@ public class Board {
         }
         System.out.println();
     }
+
+    public void printBoardInt(){
+        System.out.println("  a b c d e f g h");
+        for (int i = 7; i >= 0; i--) {
+            System.out.print((1 + i) + " ");
+            for (int j = 0; j < 8; j++) {
+                int piece = board[8 * i + j];
+                String pieceName;
+                switch (piece) {
+                    case 1:
+                        pieceName = "1";
+                        break;
+                    case 2:
+                        pieceName = "2";
+                        break;
+                    case 3:
+                        pieceName = "3";
+                        break;
+                    case 4:
+                        pieceName = "4";
+                        break;
+                    case 5:
+                        pieceName = "5";
+                        break;
+                    case 6:
+                        pieceName = "6";
+                        break;
+                    case 7:
+                        pieceName = "7";
+                        break;
+                    case 8:
+                        pieceName = "8";
+                        break;
+                    case 9:
+                        pieceName = "9";
+                        break;
+                    case 10:
+                        pieceName = "10";
+                        break;
+                    case 11:
+                        pieceName = "11";
+                        break;
+                    case 12:
+                        pieceName = "12";
+                        break;
+                    default:
+                        pieceName = "0";
+                        break;
+                }
+                System.out.print(pieceName + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
 
 }

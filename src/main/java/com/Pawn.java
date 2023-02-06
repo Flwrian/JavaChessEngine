@@ -90,10 +90,19 @@ public class Pawn extends Piece {
 
     @Override
     public void move(int position) {
-        if (this.isValidMove(position)) {
             board.board[this.position] = 0;
             board.board[position] = this.type;
             this.position = position;
-        }
+    }
+
+    @Override
+    public String toString() {
+       // Return the type, position, and color of the piece. ex: "Bishop{type=3, position=0, color=0}"
+       // color is getColor()
+       return "Pawn{" +
+               "type=" + type +
+               ", position=" + position +
+               ", color=" + getColor() +
+               '}';
     }
 }

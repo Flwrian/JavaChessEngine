@@ -144,11 +144,16 @@ public class King extends Piece {
 
     @Override
     public void move(int position) {
-        if (this.isLegalMove(position)) {
             board.board[this.position] = 0;
             board.board[position] = this.type;
             this.position = position;
-        }
+    }
+
+    @Override
+    public String toString() {
+       // Return the type, position, and color of the piece. ex: "Bishop{type=3, position=0, color=0}"
+       // color is getColor()
+        return "King{type=" + this.type + ", position=" + this.position + ", color=" + this.getColor() + "}";
     }
 
 

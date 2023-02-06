@@ -100,15 +100,44 @@ public abstract class Piece {
             return false;
         }
 
-        // Check if the move puts the king in check
-        this.move(position);
-        boolean inCheck = this.getBoard().isInCheck(this.getColor());
-        // this.undoMove();
+        board.pushMove(this.position, position);
+        boolean inCheck = board.isInCheck(getColor());
+        board.popMove();
 
         return !inCheck;
     }
 
     public abstract boolean isValidMove(int position);
+
+    public int countValidMoves() {
+        // Count the number of valid moves for the piece
+        int count = 0;
+        for (int i = 0; i < 64; i++) {
+            if (this.isValidMove(i)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void printValidMoves() {
+        for (int i = 0; i < 64; i++) {
+            if (this.isValidMove(i)) {
+                System.out.println("From " + this.getPosition() + " to " + i);
+            }
+        }
+    }
+
+    public int countLegalMoves() {
+        // Count the number of legal moves for the piece
+        int count = 0;
+        for (int i = 0; i < 64; i++) {
+            if (this.isLegalMove(i)) {
+                count++;
+            }
+        }
+        return count;
+    }
 
     /**
      * <p>

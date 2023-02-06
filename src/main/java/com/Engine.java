@@ -13,14 +13,12 @@ public class Engine {
         this.board = board;
     }
 
-    public int getNumMoves(int depth) {
+    public int getNbValidMoves() {
         int count = 0;
-        
-        for (int i = 0; i < 64; i++) {
-            if (board.getPiece(i) != null && board.getPiece(i).getColor() == board.whiteTurn) {
-                Piece piece = board.getPiece(i);
-                System.out.println(piece + " nb of legal moves: " + piece.getLegalMoves().length);
-                count += piece.getLegalMoves().length;
+        for (int i = 0; i < board.board.length; i++) {
+            Piece piece = board.getPiece(i);
+            if (piece != null) {
+                count += piece.countValidMoves();
             }
         }
         return count;
