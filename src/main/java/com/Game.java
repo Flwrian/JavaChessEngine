@@ -18,5 +18,7 @@ public class Game {
             }
         } 
         System.out.println("King pos at the end : " + king.getPosition());
+
+        board.printBoard();
     }
 }

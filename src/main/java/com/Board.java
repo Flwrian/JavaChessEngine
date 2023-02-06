@@ -1,6 +1,7 @@
 package com;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 /**
  * Chess Board Class
@@ -25,7 +26,7 @@ public class Board {
 
     public int[] board = new int[64];
 
-    private int[] lastMove = new int[4];
+    private Stack<int[]> boardHistory = new Stack<int[]>(); // Stores the board history
 
     public boolean whiteTurn;
 
@@ -33,10 +34,10 @@ public class Board {
     public King blackKing;
 
     public Board() {
-        this.setupBoard();
+        boardHistory.push(board);
     }
 
-    private void setupBoard() {
+    public void setupBoard() {
         for (int i = 0; i < 64; i++) {
             board[i] = 0;
         }
@@ -101,22 +102,24 @@ public class Board {
         board[position] = type;
     }
 
-    public void pushMove(int from, int to) {
-        lastMove[0] = from;
-        lastMove[1] = to;
-        lastMove[2] = board[from];
-        lastMove[3] = board[to];
-
-        board[to] = board[from];
-        board[from] = 0;
+    /**
+     * <p>Push a move to the board, and backup the board</p>
+     * <p>This method is VERY important, as it allows us to undo moves and it also allows us to check for check and is very important for the AI</p>
+     */
+    public void pushMove(int from, int destination) {
+        Piece piece = getPiece(from);
+        if (piece != null) {
+            piece.move(destination);
+        }
 
         whiteTurn = !whiteTurn;
+
+        boardHistory.push(board);
+
     }
 
-    public void undoMoveLastMove() {
-        board[lastMove[0]] = lastMove[2];
-        board[lastMove[1]] = lastMove[3];
-
+    public void popMove() {
+        board = boardHistory.pop();
         whiteTurn = !whiteTurn;
     }
 

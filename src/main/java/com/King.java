@@ -20,10 +20,10 @@ public class King extends Piece {
     }
 
     public boolean isAttackedAt(int position) {
-        move(position);
-        boolean isThreatened = isInCheck();
-        undoMove();
-        return isThreatened;
+        board.pushMove(this.position, position);
+        boolean isAttacked = this.isInCheck();
+        board.popMove();
+        return isAttacked;
     }
 
     public boolean isValidShortCastle() {

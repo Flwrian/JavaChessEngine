@@ -106,6 +106,7 @@ public abstract class Piece {
         this.hasMoved += nb;
     }
 
+    // TODO: passe cette méthode en abstraite maybe
     public void move(int position) {
         System.arraycopy(board.board, 0, this.tempBoard, 0, 64);
 
@@ -120,7 +121,6 @@ public abstract class Piece {
         this.getBoard().setPiece(this.getPosition(), 0);
         this.setPosition(position);
         this.addHasMoved(1);
-        board.printBoard();
     }
 
     public void undoMove() {
