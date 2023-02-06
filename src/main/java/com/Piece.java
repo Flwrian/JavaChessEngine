@@ -28,13 +28,11 @@ public abstract class Piece {
     protected Board board;
     protected int type;
     protected int position;
-    protected int hasMoved;
 
     public Piece(int type, int position, Board board) {
         this.type = type;
         this.position = position;
         this.board = board;
-        this.hasMoved = 0;
     }
 
     public static Piece getPiece(int type, int position, Board board) {
@@ -92,18 +90,6 @@ public abstract class Piece {
         this.position = position;
     }
 
-    public int hasMoved() {
-        return hasMoved;
-    }
-
-    public void setHasMoved(int hasMoved) {
-        this.hasMoved = hasMoved;
-    }
-
-    public void addHasMoved(int nb) {
-        this.hasMoved += nb;
-    }
-
     public abstract void move(int position);
 
     // TODO: fix this
@@ -113,7 +99,6 @@ public abstract class Piece {
         if (!this.isValidMove(position)) {
             return false;
         }
-        System.out.println(this + " : " + this.getPosition() + " -> " + position + " is a valid move");
 
         // Check if the move puts the king in check
         this.move(position);

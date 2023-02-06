@@ -8,9 +8,9 @@ public class Rook extends Piece {
 
     @Override
     public boolean isValidMove(int position) {
-        if (board.whiteTurn != this.getColor()) {
-            return false;
-        }
+        // if (board.whiteTurn != this.getColor()) {
+        //     return false;
+        // }
 
         if (position < 0 || position > 63) {
             return false;
@@ -54,10 +54,12 @@ public class Rook extends Piece {
         return false;
     }
 
+    @Override
     public void move(int position) {
-        this.getBoard().setPiece(position, this.type);
-        this.getBoard().setPiece(this.getPosition(), 0);
-        this.setPosition(position);
-        this.addHasMoved(1);
+        if (this.isLegalMove(position)) {
+            board.board[this.position] = 0;
+            board.board[position] = this.type;
+            this.position = position;
+        }
     }
 }

@@ -44,4 +44,13 @@ public class Knight extends Piece {
 
         return false;
     }
+
+    @Override
+    public void move(int position) {
+        if (this.isLegalMove(position)) {
+            board.board[this.position] = 0;
+            board.board[position] = this.type;
+            this.position = position;
+        }
+    }
 }
