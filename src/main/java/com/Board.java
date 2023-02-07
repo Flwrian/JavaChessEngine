@@ -121,6 +121,7 @@ public class Board {
         whiteTurn = !whiteTurn;
     }
 
+    // ? In addition to the possible way to optimize this, we can also use a bitboard to store the pieces
     public int countLegalMoves(int depth){
         if (depth == 0) {
             return 1;

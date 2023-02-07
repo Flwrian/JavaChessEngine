@@ -8,7 +8,7 @@ public class Game {
         board.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         
         Engine engine = new Engine(board);
-        // System.out.println(engine.getNbLegalMoves(6));
-        engine.printKnps();
+        engine.showKnps();
+        System.out.println(engine.getNbLegalMoves(6));
     }
 }
