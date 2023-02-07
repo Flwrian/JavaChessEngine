@@ -27,7 +27,7 @@ public class Engine {
     public int getNbLegalMoves(int depth){
         double time = System.currentTimeMillis();
         int count = board.countLegalMoves(depth);
-        System.out.println("Time elapsed for depth "+depth+" : " + (System.currentTimeMillis() - time) /1000 + " seconds");
+        System.out.println("Time elapsed for depth "+depth+" : " + (System.currentTimeMillis() - time) /1000 + " seconds");        // Print knps
         return count;
     }
 
@@ -40,5 +40,19 @@ public class Engine {
             }
         }
         return count;
+    }
+
+    public void printKnps(){
+        // Animate the stdout to show the number of legal moves per second (knps) like a loading bar
+        int depth = 4;
+        
+        while (true) {
+            double time = System.currentTimeMillis();
+            int count = board.countLegalMoves(depth);
+            double knps = count / ((System.currentTimeMillis() - time) / 1000) / 1000;
+            knps = Math.round(knps * 100.0) / 100.0;
+            System.out.print("\r" + "Currently running at "+knps+ " kN/s");
+        }
+    
     }
 }
