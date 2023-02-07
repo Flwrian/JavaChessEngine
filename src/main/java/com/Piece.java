@@ -35,6 +35,10 @@ public abstract class Piece {
         this.board = board;
     }
 
+    // ! We really need to find a better way to do this
+    // ! We need to only create one instance of each piece
+    // ! But it can be tricky to do so if we check all the possible moves
+    // ! That is the best way to optimize the program
     public static Piece getPiece(int type, int position, Board board) {
         switch (type) {
             case 1:
@@ -92,7 +96,6 @@ public abstract class Piece {
 
     public abstract void move(int position);
 
-    // TODO: fix this
     public boolean isLegalMove(int position) {
         // Check that the move is legal for the piece by checking if the move is valid
         // and if the move puts the king in check
@@ -100,6 +103,10 @@ public abstract class Piece {
             return false;
         }
 
+        // * Double the time of node exploration
+        // ? Is it really necessary to check if the move puts the king in check for a chess engine?
+        // ? After all, the engine is supposed to be able to find the best move, if the move lose the king it's not the best move so the engine won't choose it.
+        // ? Probably not necessary, maybe we will remove this in the future
         board.pushMove(this.position, position);
         boolean inCheck = board.isInCheck(getColor());
         board.popMove();

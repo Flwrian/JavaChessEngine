@@ -2,9 +2,6 @@ package com;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.Stack;
 
 /**
  * Chess Board Class
@@ -26,6 +23,8 @@ import java.util.Stack;
  * <p>
  */
 public class Board {
+
+    // ! We maybe need to find a better way to store the board / pieces / moves
 
     public int[] board = new int[64];
 
