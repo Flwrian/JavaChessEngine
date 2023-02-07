@@ -9,7 +9,7 @@ public class Pawn extends Piece {
 
     @Override
     public boolean isValidMove(int position) {
-
+        // Check if the pawn is trying to move to a position that is not on the board
         if (position < 0 || position > 63) {
             return false;
         }

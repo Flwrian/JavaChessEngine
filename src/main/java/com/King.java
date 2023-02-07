@@ -10,9 +10,9 @@ public class King extends Piece {
         super(type, position, board);
     }
 
-    public boolean isInCheck() {
+    public boolean isInCheck(int position) {
         for (Piece piece : this.board.getPieces()) {
-            if (piece.getColor() != this.getColor() && piece.isValidMove(this.getPosition())) {
+            if (piece.getColor() != this.getColor() && piece.isValidMove(position)) {
                 return true;
             }
         }
@@ -20,10 +20,7 @@ public class King extends Piece {
     }
 
     public boolean isAttackedAt(int position) {
-        board.pushMove(this.position, position);
-        boolean isAttacked = this.isInCheck();
-        board.popMove();
-        return isAttacked;
+        return this.isInCheck(position);
     }
 
     // public boolean isValidShortCastle() {

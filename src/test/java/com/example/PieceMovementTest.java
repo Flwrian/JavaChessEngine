@@ -342,7 +342,7 @@ public class PieceMovementTest {
     // }
 
     @Test
-    public void testPieceMovement() {
+    public void testPieceMovementBasicBoard() {
         Board board = new Board();
         board.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 

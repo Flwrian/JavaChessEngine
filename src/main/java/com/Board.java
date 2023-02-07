@@ -1,6 +1,9 @@
 package com;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.Stack;
 
 /**
@@ -26,7 +29,8 @@ public class Board {
 
     public int[] board = new int[64];
 
-    private Stack<int[]> boardHistory = new Stack<int[]>(); // Stores the board history
+    // private Stack<int[]> boardHistory = new Stack<int[]>(); // Stores the board history
+    private ArrayDeque<int[]> boardHistory = new ArrayDeque<int[]>();
 
     public boolean whiteTurn;
 
@@ -71,14 +75,11 @@ public class Board {
         }
     }
 
-    public Piece[] getPieces() {
-        Piece[] pieces = new Piece[0];
-        int index = 0;
+    public ArrayList<Piece> getPieces() {
+        ArrayList<Piece> pieces = new ArrayList<>();
         for (int i = 0; i < 64; i++) {
             if (board[i] != 0) {
-                pieces = Arrays.copyOf(pieces, pieces.length + 1);
-                pieces[index] = Piece.getPiece(board[i], i, this);
-                index++;
+                pieces.add(Piece.getPiece(board[i], i, this));
             }
         }
         return pieces;
