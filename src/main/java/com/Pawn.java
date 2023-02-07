@@ -95,6 +95,10 @@ public class Pawn extends Piece {
             this.position = position;
     }
 
+    public static void move(int position, int destination, int[] board, boolean color) {
+        
+    }
+
     @Override
     public String toString() {
        // Return the type, position, and color of the piece. ex: "Bishop{type=3, position=0, color=0}"

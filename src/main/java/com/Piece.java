@@ -35,6 +35,53 @@ public abstract class Piece {
         this.board = board;
     }
 
+    // ? Instead of creating a new instance each time we need to move a piece or whatever else, we could just use this static method that handle everything.
+    // * This will make the program faster, but it will make the code harder to read
+    public static void move(int position, int newPosition, Board board) {
+        int type = board.board[position];
+
+        switch (type) {
+            case 1:
+                Pawn.move(position, newPosition, board.board, type < 7);
+                break;
+            case 2:
+                Knight.move(position, newPosition, board);
+                break;
+            case 3:
+                Bishop.move(position, newPosition, board);
+                break;
+            case 4:
+                Rook.move(position, newPosition, board);
+                break;
+            case 5:
+                Queen.move(position, newPosition, board);
+                break;
+            case 6:
+                King.move(position, newPosition, board);
+                break;
+            case 7:
+                Pawn.move(position, newPosition, board);
+                break;
+            case 8:
+                Knight.move(position, newPosition, board);
+                break;
+            case 9:
+                Bishop.move(position, newPosition, board);
+                break;
+            case 10:
+                Rook.move(position, newPosition, board);
+                break;
+            case 11:
+                Queen.move(position, newPosition, board);
+                break;
+            case 12:
+                King.move(position, newPosition, board);
+                break;
+            default:
+                break;
+        }
+    }
+
     // ! We really need to find a better way to do this
     // ! We need to only create one instance of each piece
     // ! But it can be tricky to do so if we check all the possible moves
@@ -114,6 +161,7 @@ public abstract class Piece {
         return !inCheck;
     }
 
+    // ? Instead of looping through all the possible moves (looping through all the squares on the board), we could loop through all the possible moves of a piece (diag, horiz, vert, etc.)
     public abstract boolean isValidMove(int position);
 
     public int countValidMoves() {

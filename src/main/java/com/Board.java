@@ -104,10 +104,13 @@ public class Board {
         System.arraycopy(board, 0, boardCopy, 0, 64);
         boardHistory.push(boardCopy);
         
-        Piece piece = getPiece(from);
-        if (piece != null) {
-            piece.move(destination);
-        }
+        // Replace this
+        // Piece piece = getPiece(from);
+        // if (piece != null) {
+        //     piece.move(destination);
+        // }
+
+        
 
         whiteTurn = !whiteTurn;
 
