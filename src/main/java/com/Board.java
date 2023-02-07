@@ -100,6 +100,10 @@ public class Board {
      * <p>This method is VERY important, as it allows us to undo moves and it also allows us to check for check and is very important for the AI</p>
      */
     public void pushMove(int from, int destination) {
+        int[] boardCopy = new int[64];
+        System.arraycopy(board, 0, boardCopy, 0, 64);
+        boardHistory.push(boardCopy);
+        
         Piece piece = getPiece(from);
         if (piece != null) {
             piece.move(destination);
@@ -112,8 +116,28 @@ public class Board {
     }
 
     public void popMove() {
+        boardHistory.pop();
         board = boardHistory.pop();
         whiteTurn = !whiteTurn;
+    }
+
+    public int countLegalMoves(int depth){
+        if (depth == 0) {
+            return 1;
+        }
+        int count = 0;
+        for (Piece piece : getPieces()) {
+            if (piece.getColor() == whiteTurn) {
+                for (int i = 0; i < 64; i++) {
+                    if (piece.isLegalMove(i)) {
+                        pushMove(piece.getPosition(), i);
+                        count += countLegalMoves(depth - 1);
+                        popMove();
+                    }
+                }
+            }
+        }
+        return count;
     }
 
     // TODO: fix this

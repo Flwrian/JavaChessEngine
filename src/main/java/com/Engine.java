@@ -13,6 +13,24 @@ public class Engine {
         this.board = board;
     }
 
+    public int getNbLegalMoves() {
+        int count = 0;
+        for (int i = 0; i < board.board.length; i++) {
+            Piece piece = board.getPiece(i);
+            if (piece != null) {
+                count += piece.countLegalMoves();
+            }
+        }
+        return count;
+    }
+
+    public int getNbLegalMoves(int depth){
+        double time = System.currentTimeMillis();
+        int count = board.countLegalMoves(depth);
+        System.out.println("Time elapsed for depth "+depth+" : " + (System.currentTimeMillis() - time) /1000 + " seconds");
+        return count;
+    }
+
     public int getNbValidMoves() {
         int count = 0;
         for (int i = 0; i < board.board.length; i++) {
