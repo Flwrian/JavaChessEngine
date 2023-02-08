@@ -20,14 +20,10 @@ public class Engine {
         return count;
     }
 
-    public int getNbValidMoves() {
-        int count = 0;
-        for (int i = 0; i < board.board.length; i++) {
-            Piece piece = board.getPiece(i);
-            if (piece != null) {
-                count += piece.countValidMoves();
-            }
-        }
+    public int getNbValidMoves(int depth) {
+        double time = System.currentTimeMillis();
+        int count = board.countValidMoves(depth);
+        System.out.println("\nTime elapsed for depth "+depth+" : " + (System.currentTimeMillis() - time) /1000 + " seconds");
         return count;
     }
 

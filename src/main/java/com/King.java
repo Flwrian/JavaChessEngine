@@ -3,25 +3,25 @@ package com;
 /**
  * King
  */
-public class King extends Piece {
+public class King {
 
 
-    public King(int type, int position, Board board) {
-        super(type, position, board);
-    }
+    // public King(int type, int position, Board board) {
+    //     super(type, position, board);
+    // }
 
-    public boolean isInCheck(int position) {
-        for (Piece piece : this.board.getPieces()) {
-            if (piece.getColor() != this.getColor() && piece.isValidMove(position)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    // public boolean isInCheck(int position) {
+    //     for (Piece piece : this.board.getPieces()) {
+    //         if (piece.getColor() != this.getColor() && piece.isValidMove(position)) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 
-    public boolean isAttackedAt(int position) {
-        return this.isInCheck(position);
-    }
+    // public boolean isAttackedAt(int position) {
+    //     return this.isInCheck(position);
+    // }
 
     // public boolean isValidShortCastle() {
 
@@ -98,59 +98,88 @@ public class King extends Piece {
     // }
     
 
-    public boolean isValidMove(int position) {
+    // public boolean isValidMove(int position) {
+    //     if (position < 0 || position > 63) {
+    //         return false;
+    //     }
+
+        
+    //     if (this.getPosition() == position) {
+    //         return false;
+    //     }
+
+    //     // if (position == this.getPosition() + 2) {
+    //     //     return this.isValidShortCastle();
+    //     // }
+
+    //     // if (position == this.getPosition() - 2) {
+    //     //     return this.isValidLongCastle();
+    //     // }
+        
+    //     int rowDiff = Math.abs(position / 8 - this.position / 8);
+    //     int colDiff = Math.abs(position % 8 - this.position % 8);
+
+    //     if (rowDiff > 1 || colDiff > 1) {
+    //         // King can only move one square at a time
+    //         return false;
+    //     }
+        
+    //     if (this.getBoard().getPiece(position) != null && this.getBoard().getPiece(position).getColor() == this.getColor()) {
+    //         return false;
+    //     }
+    //     return true;
+    // }
+
+    // @Override
+    // public boolean isLegalMove(int position) {
+    //     // A move is legal if it is valid and does not put the king in check
+    //     if (this.isValidMove(position) && !this.isAttackedAt(position)) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
+
+    // @Override
+    // public void move(int position) {
+    //         board.board[this.position] = 0;
+    //         board.board[position] = this.type;
+    //         this.position = position;
+    // }
+
+    // @Override
+    // public String toString() {
+    //    // Return the type, position, and color of the piece. ex: "Bishop{type=3, position=0, color=0}"
+    //    // color is getColor()
+    //     return "King{type=" + this.type + ", position=" + this.position + ", color=" + this.getColor() + "}";
+    // }
+
+    public static void move(int position, int newPosition, Board board, boolean b) {
+    }
+
+    public static boolean isValidMove(int piecePosition, int position, Board board) {
+        boolean color = board.board[piecePosition] < 7;
+
         if (position < 0 || position > 63) {
             return false;
         }
 
-        
-        if (this.getPosition() == position) {
+        if (piecePosition == position) {
             return false;
         }
 
-        // if (position == this.getPosition() + 2) {
-        //     return this.isValidShortCastle();
-        // }
-
-        // if (position == this.getPosition() - 2) {
-        //     return this.isValidLongCastle();
-        // }
-        
-        int rowDiff = Math.abs(position / 8 - this.position / 8);
-        int colDiff = Math.abs(position % 8 - this.position % 8);
+        int rowDiff = Math.abs(position / 8 - piecePosition / 8);
+        int colDiff = Math.abs(position % 8 - piecePosition % 8);
 
         if (rowDiff > 1 || colDiff > 1) {
             // King can only move one square at a time
             return false;
         }
-        
-        if (this.getBoard().getPiece(position) != null && this.getBoard().getPiece(position).getColor() == this.getColor()) {
+
+        if (board.board[position] != 0 && board.board[position] < 7 == color) {
             return false;
         }
+        
         return true;
-    }
-
-    @Override
-    public boolean isLegalMove(int position) {
-        // A move is legal if it is valid and does not put the king in check
-        if (this.isValidMove(position) && !this.isAttackedAt(position)) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void move(int position) {
-            board.board[this.position] = 0;
-            board.board[position] = this.type;
-            this.position = position;
-    }
-
-    @Override
-    public String toString() {
-       // Return the type, position, and color of the piece. ex: "Bishop{type=3, position=0, color=0}"
-       // color is getColor()
-        return "King{type=" + this.type + ", position=" + this.position + ", color=" + this.getColor() + "}";
     }
 
 

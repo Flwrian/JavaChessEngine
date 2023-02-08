@@ -74,22 +74,22 @@ public class Board {
         }
     }
 
-    public ArrayList<Piece> getPieces() {
-        ArrayList<Piece> pieces = new ArrayList<>();
-        for (int i = 0; i < 64; i++) {
-            if (board[i] != 0) {
-                pieces.add(Piece.getPiece(board[i], i, this));
-            }
-        }
-        return pieces;
-    }
+    // public ArrayList<Piece> getPieces() {
+    //     ArrayList<Piece> pieces = new ArrayList<>();
+    //     for (int i = 0; i < 64; i++) {
+    //         if (board[i] != 0) {
+    //             pieces.add(Piece.getPiece(board[i], i, this));
+    //         }
+    //     }
+    //     return pieces;
+    // }
 
-    public Piece getPiece(int position) {
-        if (board[position] != 0) {
-            return Piece.getPiece(board[position], position, this);
-        }
-        return null;
-    }
+    // public Piece getPiece(int position) {
+    //     if (board[position] != 0) {
+    //         return Piece.getPiece(board[position], position, this);
+    //     }
+    //     return null;
+    // }
 
     public void setPiece(int position, int type) {
         board[position] = type;
@@ -109,6 +109,7 @@ public class Board {
         // if (piece != null) {
         //     piece.move(destination);
         // }
+        Piece.move(from, destination, this);
 
         
 
@@ -130,11 +131,30 @@ public class Board {
             return 1;
         }
         int count = 0;
-        for (Piece piece : getPieces()) {
-            if (piece.getColor() == whiteTurn) {
-                for (int i = 0; i < 64; i++) {
-                    if (piece.isLegalMove(i)) {
-                        pushMove(piece.getPosition(), i);
+        for (int i = 0; i < 64; i++) {
+            if (board[i] != 0 && board[i] < 7 == whiteTurn) {
+                for (int j = 0; j < 64; j++) {
+                    if (Piece.isLegalMove(board[i], i, j, this)) {
+                        pushMove(i, j);
+                        count += countLegalMoves(depth - 1);
+                        popMove();
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public int countValidMoves(int depth){
+        if (depth == 0) {
+            return 1;
+        }
+        int count = 0;
+        for (int i = 0; i < 64; i++) {
+            if (board[i] != 0 && board[i] < 7 == whiteTurn) {
+                for (int j = 0; j < 64; j++) {
+                    if (Piece.isValidMove(board[i], i, j, this)) {
+                        pushMove(i, j);
                         count += countLegalMoves(depth - 1);
                         popMove();
                     }
@@ -155,9 +175,8 @@ public class Board {
         }
 
         for (int i = 0; i < 64; i++) {
-            if (board[i] != 0 && Piece.getPiece(board[i], i, this).getColor() != white) {
-                Piece piece = Piece.getPiece(board[i], i, this);
-                if (piece.isLegalMove(kingPosition)) {
+            if (board[i] != 0 && board[i] < 7 != white) {
+                if (Piece.isLegalMove(board[i], i, kingPosition, this)) {
                     return true;
                 }
             }
