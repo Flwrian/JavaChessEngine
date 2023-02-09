@@ -75,23 +75,6 @@ public class Board {
         }
     }
 
-    // public ArrayList<Piece> getPieces() {
-    // ArrayList<Piece> pieces = new ArrayList<>();
-    // for (int i = 0; i < 64; i++) {
-    // if (board[i] != 0) {
-    // pieces.add(Piece.getPiece(board[i], i, this));
-    // }
-    // }
-    // return pieces;
-    // }
-
-    // public Piece getPiece(int position) {
-    // if (board[position] != 0) {
-    // return Piece.getPiece(board[position], position, this);
-    // }
-    // return null;
-    // }
-
     public void setPiece(int position, int type) {
         board[position] = type;
     }
