@@ -7,6 +7,7 @@ import com.Board;
 import com.King;
 import com.Knight;
 import com.Pawn;
+import com.Piece;
 import com.Queen;
 import com.Rook;
 
@@ -539,5 +540,35 @@ public class PieceMovementTest {
 
 
     // }
+
+    @Test
+    public void testLegalMovements() {
+        Board board = new Board();
+        board.loadFEN("8/8/8/8/8/1qk5/8/K7 w - - 0 1");
+        
+        boolean isLegal = Piece.isLegalMove(board.board[0], 0, 1, board);
+        assertEquals(false, isLegal);
+
+        int count = 0;
+        for (int i = 0; i < 64; i++) {
+            if (Piece.isLegalMove(board.board[0], 0, i, board)) {
+                count++;
+            }
+        }
+        assertEquals(0, count);
+
+        board.loadFEN("8/8/8/8/1q6/2k5/8/K7 w - - 0 1");
+
+        isLegal = Piece.isLegalMove(board.board[0], 0, 1, board);
+        assertEquals(false, isLegal);
+
+        count = 0;
+        for (int i = 0; i < 64; i++) {
+            if (Piece.isLegalMove(board.board[0], 0, i, board)) {
+                count++;
+            }
+        }
+        assertEquals(0, count);
+    }
 
 }

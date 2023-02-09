@@ -114,12 +114,14 @@ public class Pawn extends Piece {
     //             '}';
     // }
 
+    // TODO: add promotion
     public static void move(int position, int destination, Board board, boolean color) {
         int type = board.board[position];
         board.board[position] = 0;
         board.board[destination] = type;
     }
 
+    // TODO: Fix pawn can eat in front of it
     public static boolean isValidMove(int piecePosition, int position, Board board) {
         boolean color = board.board[piecePosition] < 7;
 
@@ -162,6 +164,11 @@ public class Pawn extends Piece {
             if (board.board[position] != 0 && (position - piecePosition == 9 || position - piecePosition == 7)) {
                 return true;
             }
+
+            if(board.board[position] != 0) {
+                return false;
+            }
+
             // Check if the pawn is trying to move to a position that is more than 2 squares
             // in front of it
             if (piecePosition < 8 && position > piecePosition + 7) {
@@ -196,6 +203,11 @@ public class Pawn extends Piece {
             if (board.board[position] != 0 && (piecePosition - position == 9 || piecePosition - position == 7)) {
                 return true;
             }
+            
+            if(board.board[position] != 0) {
+                return false;
+            }
+
             if (piecePosition > 55 && position < piecePosition - 7) {
                 return false;
             }

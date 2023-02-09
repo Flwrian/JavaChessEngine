@@ -194,19 +194,19 @@ public abstract class Piece {
         // Check that the move is valid for the piece
         
         // Check that the move is inside the board
-        if (position < 0 || position > 63) {
-            return false;
-        }
+        // if (position < 0 || position > 63) {
+        //     return false;
+        // }
 
-        // Check that the move is not on the same square
-        if (piecePosition == position) {
-            return false;
-        }
+        // // Check that the move is not on the same square
+        // if (piecePosition == position) {
+        //     return false;
+        // }
 
-        // Check that the move is not on a square occupied by a piece of the same color
-        if (board.board[position] != 0 && board.board[position] < 7 == board.board[piecePosition] < 7) {
-            return false;
-        }
+        // // Check that the move is not on a square occupied by a piece of the same color
+        // if (board.board[position] != 0 && board.board[position] < 7 == board.board[piecePosition] < 7) {
+        //     return false;
+        // }
 
         // Check that the move is valid for the piece
         switch (pieceType) {
@@ -251,11 +251,11 @@ public abstract class Piece {
         // ? Is it really necessary to check if the move puts the king in check for a chess engine?
         // ? After all, the engine is supposed to be able to find the best move, if the move lose the king it's not the best move so the engine won't choose it.
         // ? Probably not necessary, maybe we will remove this in the future
-        // board.pushMove(piecePosition, destination);
-        // boolean inCheck = board.isInCheck(pieceType < 7);
-        // board.popMove();
+        board.pushMove(piecePosition, destination);
+        boolean inCheck = board.isInCheck(pieceType < 7);
+        board.popMove();
 
-        return true;
+        return !inCheck;
     }
 
     // public void printValidMoves() {
