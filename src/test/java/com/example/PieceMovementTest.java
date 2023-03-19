@@ -546,17 +546,23 @@ public class PieceMovementTest {
         Board board = new Board();
         board.loadFEN("8/8/8/8/8/1qk5/8/K7 w - - 0 1");
         
+        // Test if the king can move to the square 1 (not legal)
         boolean isLegal = Piece.isLegalMove(board.board[0], 0, 1, board);
         assertEquals(false, isLegal);
 
+        // Tesing every square for the king (should be 0)
         int count = 0;
         for (int i = 0; i < 64; i++) {
             if (Piece.isLegalMove(board.board[0], 0, i, board)) {
                 count++;
             }
         }
+
+        // No move is legal
         assertEquals(0, count);
 
+        // This position has only one legal move for the king (it us up, so square 8)
+        board = new Board();
         board.loadFEN("8/8/8/8/1q6/2k5/8/K7 w - - 0 1");
 
         isLegal = Piece.isLegalMove(board.board[0], 0, 1, board);
@@ -568,7 +574,65 @@ public class PieceMovementTest {
                 count++;
             }
         }
-        assertEquals(0, count);
+        
+        // The only legal move is up, so it should be 1
+        assertEquals(1, count);
+
+        board = new Board();
+        board.loadFEN("8/8/8/8/q7/3k4/8/1K6 w - - 0 1");
+
+        isLegal = Piece.isLegalMove(board.board[1], 1, 0, board);
+        assertEquals(false, isLegal);
+
+        count = 0;
+        for (int i = 0; i < 64; i++) {
+            if (Piece.isLegalMove(board.board[1], 1, i, board)) {
+                count++;
+            }
+        }
+
+        // 2 legal moves
+        assertEquals(2, count);
+
+        board = new Board();
+        board.loadFEN("8/8/8/8/2k5/8/q7/1K6 w - - 0 1");
+
+        isLegal = Piece.isLegalMove(board.board[1], 1, 0, board);
+        assertEquals(false, isLegal);
+
+        count = 0;
+        for (int i = 0; i < 64; i++) {
+            if (Piece.isLegalMove(board.board[1], 1, i, board)) {
+                count++;
+            }
+        }
+
+        // 2 legal moves
+        assertEquals(2, count);
+
+        board = new Board();
+        board.loadFEN("5b1r/ppp1kppp/8/3pp3/6n1/4K3/PPq3PP/5RR1 w - - 2 30");
+
+        isLegal = Piece.isLegalMove(board.board[20], 20, 27, board);
+        assertEquals(board.board[20], 6);
+        assertEquals(false, isLegal);
+    }
+
+    @Test
+    public void test_test(){
+        Board board = new Board();
+        board.loadFEN("r3k2r/ppp2ppp/2n1bq2/8/1b1P2B1/4Q1P1/PPPNPP1P/R3K2R b KQkq - 0 17");
+
+        int count = 0;
+        for (int i = 0; i < 64; i++) {
+            if (Piece.isLegalMove(board.board[53], 53, 53-16, board)) {
+                count++;
+            }
+        }
+        System.out.println(board.board[53]);
+        System.out.println(board.board[53-16]);
+        System.out.println(count);
+
     }
 
 }

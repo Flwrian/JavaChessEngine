@@ -171,4 +171,10 @@ public abstract class Piece {
         return count;
     }
 
+    public static String getSquareName(int from) {
+        // Get the name of the square (inverse of the board array)
+        String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h"};
+        return letters[from % 8] + (from / 8 + 1);
+    }
+
 }

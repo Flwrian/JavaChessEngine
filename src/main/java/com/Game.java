@@ -1,20 +1,34 @@
 package com;
 
 public class Game {
+
+    static boolean isEnded = false;
     
     public static void main(String[] args) {
         Board board = new Board();
-        board.loadFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); 
+        board.loadFEN(Board.STARTING_FEN);
         board.printBoard();
 
         Engine engine = new Engine(board);
-        // for (int i = 0; i < 6; i++) {
-        //     System.out.println(engine.getNbLegalMoves(i));
-        //     // System.out.println(engine.getNbValidMoves(i));
-        // }
-
-        Zobrist table = new Zobrist();
-        System.out.println(table.getHash(board.board));
         
+        engine.setDepth(4);
+
+        try{
+            while(!isEnded){
+
+                if(board.is3FoldRepetition()){
+                    System.out.println("3-fold repetition");
+                    isEnded = true;
+                    break;
+                }
+
+                engine.play();
+                board.printBoard();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(Board.gamePGN);
     }
 }

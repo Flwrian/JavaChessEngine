@@ -1,7 +1,7 @@
 package com;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Chess Board Class
@@ -26,6 +26,9 @@ public class Board {
 
     // ! We maybe need to find a better way to store the board / pieces / moves
 
+    public static final String STARTING_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    public static String gamePGN = "";
+
     public int[] board = new int[64];
 
     // private Stack<int[]> boardHistory = new Stack<int[]>(); // Stores the board
@@ -33,6 +36,8 @@ public class Board {
     private ArrayDeque<int[]> boardHistory = new ArrayDeque<int[]>();
 
     public boolean whiteTurn;
+
+    private int moveNumber = 1;
 
     public Board() {
         boardHistory.push(board);
@@ -100,6 +105,9 @@ public class Board {
         // }
         // Piece.move(from, destination, this);
         Piece.move(from, destination, this);
+        if(is3FoldRepetition()){
+            throw new RuntimeException("3 fold repetition at move " + moveNumber);
+        }
 
         whiteTurn = !whiteTurn;
 
@@ -113,8 +121,58 @@ public class Board {
         whiteTurn = !whiteTurn;
     }
 
+    public void printTurn() {
+        if (whiteTurn) {
+            System.out.println("White's turn");
+        } else {
+            System.out.println("Black's turn");
+        }
+    }
+
     public void info(int square) {
         System.out.println("Piece: " + board[square]);
+    }
+
+    public boolean isStaleMate() {
+        if (whiteTurn) {
+            return countLegalMoves(1) == 0;
+        } else {
+            return countLegalMoves(1) == 0;
+        }
+    }
+
+    
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.hashCode(board);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Board other = (Board) obj;
+        if (!Arrays.equals(board, other.board))
+            return false;
+        return true;
+    }
+
+    public boolean is3FoldRepetition() {
+        int count = 0;
+        for (int[] board : boardHistory) {
+            if (Arrays.equals(board, this.board)) {
+                count++;
+            }
+        }
+        return count >= 6;
     }
 
     // ? In addition to the possible way to optimize this, we can also use a
@@ -161,7 +219,11 @@ public class Board {
     public boolean isInCheck(boolean white) {
         int kingPosition = 0;
         for (int i = 0; i < 64; i++) {
-            if (board[i] == (white ? 6 : 12)) {
+            if (board[i] == 6 && white == true) {
+                kingPosition = i;
+                break;
+            }
+            if (board[i] == 12 && white == false) {
                 kingPosition = i;
                 break;
             }
@@ -175,6 +237,23 @@ public class Board {
             }
         }
         return false;
+    }
+
+    public int[][] getLegalMoves() {
+        int[][] moves = new int[64][64];
+        int index = 0;
+        for (int i = 0; i < 64; i++) {
+            if (board[i] != 0 && board[i] < 7 == whiteTurn) {
+                for (int j = 0; j < 64; j++) {
+                    if (Piece.isLegalMove(board[i], i, j, this)) {
+                        moves[index][0] = i;
+                        moves[index][1] = j;
+                        index++;
+                    }
+                }
+            }
+        }
+        return moves;
     }
 
     public void printValidMoves(int piecePosition) {
@@ -419,6 +498,91 @@ public class Board {
             System.out.println();
         }
         System.out.println();
+    }
+
+    /**
+     * Make a move on the board.
+     * Example: "e2e4" or "e7e5"
+     * 
+     * @param string
+     */
+    public void makeMove(String string) {
+        int from = 8 * (8 - (string.charAt(1) - '0')) + (string.charAt(0) - 'a');
+        int to = 8 * (8 - (string.charAt(3) - '0')) + (string.charAt(2) - 'a');
+        board[to] = board[from];
+        board[from] = 0;
+    }
+
+    /**
+     * This method will be used to build the gamePGN string.
+     */
+    public void buildPGN(int from, int destination) {
+        String move = "";
+        int pieceType = board[from];
+
+        switch (pieceType) {
+            case 1:
+                break;
+            case 2:
+                move += "N";
+                break;
+            case 3:
+                move += "B";
+                break;
+            case 4:
+                move += "R";
+                break;
+            case 5:
+                move += "Q";
+                break;
+            case 6:
+                move += "K";
+                break;
+            case 7:
+                break;
+            case 8:
+                move += "N";
+                break;
+            case 9:
+                move += "B";
+                break;
+            case 10:
+                move += "R";
+                break;
+            case 11:
+                move += "Q";
+                break;
+            case 12:
+                move += "K";
+                break;
+            default:
+                break;
+        }
+
+        move += Piece.getSquareName(from).charAt(0);
+        int fromRow = (from / 8) + 1;
+        move += fromRow;
+
+
+        move += Piece.getSquareName(destination);
+
+        if (whiteTurn) {
+            if (isInCheck(whiteTurn)) {
+                move += "+";
+            }
+            gamePGN += moveNumber + ". " + move + " ";
+            moveNumber++;
+        } else {
+            if (isInCheck(!whiteTurn)) {
+                move += "+";
+            }
+
+            gamePGN += moveNumber + ". " + move + " ";
+            moveNumber++;
+
+        }
+
+        System.out.println(gamePGN);
     }
 
 }
