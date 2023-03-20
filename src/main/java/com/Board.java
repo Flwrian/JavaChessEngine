@@ -39,6 +39,8 @@ public class Board {
 
     private int moveNumber = 1;
 
+    public boolean canPlay = true;
+
     public Board() {
         boardHistory.push(board);
     }
@@ -84,6 +86,9 @@ public class Board {
         board[position] = type;
     }
 
+    public void setCanPlay(boolean canPlay) {
+        this.canPlay = canPlay;
+    }
     /**
      * <p>
      * Push a move to the board, and backup the board
@@ -94,6 +99,7 @@ public class Board {
      * </p>
      */
     public void pushMove(int from, int destination) {
+        if(!canPlay) throw new RuntimeException("Cannot play");
         int[] boardCopy = new int[64];
         System.arraycopy(board, 0, boardCopy, 0, 64);
         boardHistory.push(boardCopy);
@@ -106,7 +112,7 @@ public class Board {
         // Piece.move(from, destination, this);
         Piece.move(from, destination, this);
         if(is3FoldRepetition()){
-            throw new RuntimeException("3 fold repetition at move " + moveNumber);
+            setCanPlay(false);
         }
 
         whiteTurn = !whiteTurn;
@@ -116,6 +122,7 @@ public class Board {
     }
 
     public void popMove() {
+        if(!canPlay) setCanPlay(true);
         boardHistory.pop();
         board = boardHistory.pop();
         whiteTurn = !whiteTurn;

@@ -184,14 +184,19 @@ public class Engine {
         // IA play the best move according to the minimax algorithm
         int[] bestMove = minimax(depth, Integer.MIN_VALUE, Integer.MAX_VALUE, board.whiteTurn);
         System.out.println(bestMove[2]);
-        if(bestMove[2] > 10000 || bestMove[2] < -10000){
-            System.out.println(board.whiteTurn ? "White won" : "Black won");
-        }
-        if(bestMove[0] == -1 || bestMove[1] == -1){
-            System.out.println(board.whiteTurn ? "White resigned" : "Black resigned");
-            System.exit(0);
+        if(bestMove[0] == 0 && bestMove[1] == 0){
+            // Choose another move
+            System.out.println("Try another move");
+            bestMove = minimax(depth + 1, Integer.MIN_VALUE, Integer.MAX_VALUE, board.whiteTurn);
         }
         board.pushMove(bestMove[0], bestMove[1]);
+        if(!board.canPlay) {
+            // Find another move
+            System.out.println("Try another move");
+            board.popMove();
+            bestMove = minimax(depth + 1, Integer.MIN_VALUE, Integer.MAX_VALUE, board.whiteTurn);
+            board.pushMove(bestMove[0], bestMove[1]);
+        }
         board.buildPGN(bestMove[0], bestMove[1]);
     }
 

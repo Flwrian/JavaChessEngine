@@ -10,8 +10,13 @@ public class Game {
         board.printBoard();
 
         Engine engine = new Engine(board);
-        
-        engine.setDepth(4);
+        engine.setDepth(5);
+
+        Engine engine2 = new Engine(board);
+        engine2.setDepth(2);
+
+        board.pushMove(4+8, 4+8+16);
+        board.buildPGN(4+8, 4+8+16);
 
         try{
             while(!isEnded){
@@ -22,7 +27,12 @@ public class Game {
                     break;
                 }
 
-                engine.play();
+                if(board.whiteTurn){
+                    engine.play();
+                }
+                else{
+                    engine2.play();
+                }
                 board.printBoard();
             }
         } catch (Exception e) {
