@@ -33,7 +33,7 @@ public class Pawn extends Piece {
         }
 
         // Check that the move is not on a square occupied by a piece of the same color
-        if (board.board[position] != 0 && board.board[position] < 7 == board.board[piecePosition] < 7) {
+        if (board.board[position] != 0 && (board.board[position] < 7 == board.board[piecePosition] < 7)) {
             return false;
         }
 
@@ -52,33 +52,32 @@ public class Pawn extends Piece {
             // }
             // }
 
-            // Check if the pawn is trying to move to a position that is not in front of it
-            if (position < piecePosition || position > piecePosition + 16) {
-                return false;
+            // Check if the pawn is moving one square in front of it and the square is empty
+            if (position == piecePosition + 8 && board.board[position] == 0) {
+                return true;
             }
 
-        
-
-            // Check if the pawn is trying to move to a position that is more than 2 squares
-            // in front of it
-            if (piecePosition < 8 && position > piecePosition + 7) {
-                return false;
+            // Check if the pawn is moving two squares in front of it and the squares are empty
+            if (piecePosition < 8 && position == piecePosition + 16 && board.board[piecePosition + 8] == 0
+                    && board.board[position] == 0) {
+                return true;
             }
 
-            int row = piecePosition / 8;
             
-            if (position == piecePosition + 8 || (position == piecePosition + 16 && row == 1 && (board.board[piecePosition + 8] == 0))) {
-                return true;
-            }
+            int row = piecePosition / 8;
 
-            // Check if the pawn is trying to move to a position that is diagonal to it
+            // Check if the pawn is trying to capture a piece diagonally
             if (board.board[position] != 0 && (position - piecePosition == 9 || position - piecePosition == 7)) {
+                // Check if the pawn is on the edge of the board
+                if (row == 0 && position - piecePosition == 9) {
+                    return false;
+                } else if (row == 7 && position - piecePosition == 7) {
+                    return false;
+                }
                 return true;
             }
 
-            if(board.board[position] != 0) {
-                return false;
-            }
+            return false;
 
             // For black pawns
         } else {
@@ -95,31 +94,32 @@ public class Pawn extends Piece {
             // }
             // }
 
-            if (position > piecePosition || position < piecePosition - 16) {
-                return false;
+            // Check if the pawn is moving one square in front of it and the square is empty
+            if (position == piecePosition - 8 && board.board[position] == 0) {
+                return true;
             }
 
-            if (piecePosition > 55 && position < piecePosition - 7) {
-                return false;
+            // Check if the pawn is moving two squares in front of it and the squares are empty
+            if (piecePosition > 55 && position == piecePosition - 16 && board.board[piecePosition - 8] == 0
+                    && board.board[position] == 0) {
+                return true;
             }
+
             int row = piecePosition / 8;
-            
-            if (position == piecePosition - 8 || (position == piecePosition - 16 && row == 6 && (board.board[piecePosition - 8] == 0))) {
-                return true;
-            }
-            
+
+            // Check if the pawn is trying to capture a piece diagonally
             if (board.board[position] != 0 && (piecePosition - position == 9 || piecePosition - position == 7)) {
+                // Check if the pawn is on the edge of the board
+                if (row == 0 && piecePosition - position == 7) {
+                    return false;
+                } else if (row == 7 && piecePosition - position == 9) {
+                    return false;
+                }
                 return true;
             }
 
-                        
-            if(board.board[position] != 0) {
-                return false;
-            }
+            return false;
 
         }
-
-        return false;
-
     }
 }
