@@ -10,16 +10,17 @@ public class Game {
         board.printBoard();
 
         Engine engine = new Engine(board);
-        engine.setDepth(5);
+        engine.setDepth(2);
 
         Engine engine2 = new Engine(board);
-        engine2.setDepth(2);
+        engine2.setDepth(4);
 
         board.pushMove(4+8, 4+8+16);
         board.buildPGN(4+8, 4+8+16);
 
         try{
             while(!isEnded){
+                isEnded = !board.canPlay;
 
                 if(board.is3FoldRepetition()){
                     System.out.println("3-fold repetition");

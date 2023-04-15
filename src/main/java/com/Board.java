@@ -111,9 +111,6 @@ public class Board {
         // }
         // Piece.move(from, destination, this);
         Piece.move(from, destination, this);
-        if(is3FoldRepetition()){
-            setCanPlay(false);
-        }
 
         whiteTurn = !whiteTurn;
 
@@ -577,6 +574,7 @@ public class Board {
             if (isInCheck(whiteTurn)) {
                 move += "+";
             }
+
             gamePGN += moveNumber + ". " + move + " ";
             moveNumber++;
         } else {

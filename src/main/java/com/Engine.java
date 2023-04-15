@@ -31,7 +31,7 @@ public class Engine {
     private static final int BISHOP_VALUE = 330;
     private static final int ROOK_VALUE = 500;
     private static final int QUEEN_VALUE = 900;
-    private static final int KING_VALUE = 20000;
+    private static final int KING_VALUE = 25000;
 
     // Piece square tables
     private static final int[] PAWN_TABLE = {
@@ -189,14 +189,10 @@ public class Engine {
             System.out.println("Try another move");
             bestMove = minimax(depth + 1, Integer.MIN_VALUE, Integer.MAX_VALUE, board.whiteTurn);
         }
-        board.pushMove(bestMove[0], bestMove[1]);
-        if(!board.canPlay) {
-            // Find another move
-            System.out.println("Try another move");
-            board.popMove();
-            bestMove = minimax(depth + 1, Integer.MIN_VALUE, Integer.MAX_VALUE, board.whiteTurn);
-            board.pushMove(bestMove[0], bestMove[1]);
+        if(bestMove[0] == 0 && bestMove[1] == 0){
+            throw new IllegalStateException(board.whiteTurn ? "White resigned" : "Black resigned");
         }
+        board.pushMove(bestMove[0], bestMove[1]);
         board.buildPGN(bestMove[0], bestMove[1]);
     }
 
